@@ -4,13 +4,25 @@ const API = axios.create({
   baseURL: "http://localhost:5000/api",
 });
 
-// Attach token automatically
-API.interceptors.request.use((req) => {
+// Attach token to every request
+API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    req.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`;
   }
-  return req;
+  return config;
 });
+
+// Auto logout on 401
+API.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(err);
+  }
+);
 
 export default API;
