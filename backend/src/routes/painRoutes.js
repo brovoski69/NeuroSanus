@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-
-const painController = require("../controllers/painController");
+const { createPainLog, getPainLogs } = require("../controllers/painController");
 const authMiddleware = require("../middleware/authMiddleware");
 
-router.post("/", authMiddleware, painController.createPainLog);
-router.get("/", authMiddleware, painController.getPainLogsByUser);
+router.post("/", authMiddleware, createPainLog);
+router.get("/", authMiddleware, getPainLogs);
 
 module.exports = router;

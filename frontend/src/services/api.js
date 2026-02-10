@@ -4,7 +4,6 @@ const API = axios.create({
   baseURL: "http://localhost:5000/api",
 });
 
-// Attach token to every request
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -13,7 +12,6 @@ API.interceptors.request.use((config) => {
   return config;
 });
 
-// Auto logout on 401
 API.interceptors.response.use(
   (res) => res,
   (err) => {
